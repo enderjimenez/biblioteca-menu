@@ -142,8 +142,51 @@ class Program
 
     static void UpdateBookMenu()
     {
-        Console.WriteLine("\n Ejecutando: Actualizando libro (Editar títular / Editar autor / Editar año - categoría )");
-        Pause();
+        bool backUpdate = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("--- ACTUALIZAR LIBRO ---");
+            Console.WriteLine("1. Editar título");
+            Console.WriteLine("2. Editar autor");
+            Console.WriteLine("3. Editar año o categoría");
+            Console.WriteLine("0. Volver al menú de libros");
+            Console.Write("Seleccione una opción: ");
+
+            string input = Console.ReadLine()!;
+            if (int.TryParse(input, out int opt))
+            {
+                if (opt == 1) 
+                { 
+                    Console.WriteLine("\n[Stub] Editando título del libro..."); 
+                    Pause(); 
+                }
+                else if (opt == 2) 
+                { 
+                    Console.WriteLine("\n[Stub] Editando autor del libro..."); 
+                    Pause(); 
+                }
+                else if (opt == 3) 
+                { 
+                    Console.WriteLine("\n[Stub] Editando año o categoría del libro..."); 
+                    Pause(); 
+                }
+                else if (opt == 0) 
+                { 
+                    backUpdate = true; 
+                }
+                else 
+                { 
+                    Console.WriteLine("\n[Error] Opción inválida."); 
+                    Pause(); 
+                }
+            }
+            else 
+            { 
+                Console.WriteLine("\n[Error] Entrada inválida."); 
+                Pause(); 
+            }
+        } while (!backUpdate);
     }
 
     static void DeleteBook()
