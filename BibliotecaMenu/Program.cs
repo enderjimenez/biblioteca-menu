@@ -45,7 +45,7 @@ class Program
                         ShowPersistenceMenu();
                         break;
                     case 6:
-                        Console.WriteLine("[Menú de Navegación de SALIR]");
+                        ConfirmExitAndSave();
                         break;
                     default:
                         Console.WriteLine("[Error] Opción no valida. Por favor, ingrese un número entre 1 y 6.");
@@ -695,4 +695,42 @@ class Program
         Pause();
     }
 
+    // FLUJO DE SALIDA (feature/exit-flow)
+
+    static bool ConfirmExitAndSave()
+    {
+        bool validAnswer = false;
+        bool shouldExit = false;
+
+        do
+        {
+            Console.WriteLine(" === SALIR === ");
+            Console.Write("¿Guardar antes de salir? (S/N): ");
+            
+            string input = Console.ReadLine()!.Trim().ToUpper();
+
+            if (input == "S")
+            {
+                SaveDataStub();
+                Console.WriteLine("\n[Sistema] Datos guardados exitosamente. Cerrando aplicación...");
+                validAnswer = true;
+                shouldExit = true;
+            }
+            else if (input == "N")
+            {
+                Console.WriteLine("\n[Sistema] Saliendo sin guardar cambios. Cerrando aplicación...");
+                validAnswer = true;
+                shouldExit = true;
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Opción inválida. Ingrese 'S' para Sí o 'N' para No.");
+                
+            }
+
+        } while (!validAnswer);
+        Console.Clear();
+        return shouldExit;
+    
+    }
 }
