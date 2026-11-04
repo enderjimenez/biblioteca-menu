@@ -11,9 +11,7 @@
 3. [Arquitectura y Metodología](#-arquitectura-y-metodología)
 4. [Estructura del Menú Principal](#-estructura-del-menú-principal)
 5. [Evidencia de Ejecución (Capturas de Pantalla)](#-evidencia-de-ejecución-capturas-de-pantalla)
-6. [Requisitos del Sistema e Instalación](#-requisitos-del-sistema-e-instalación)
-7. [Historial de Ramas y Git Flow](#-historial-de-ramas-y-git-flow)
-8. [Créditos](#-créditos)
+
 
 ---
 
