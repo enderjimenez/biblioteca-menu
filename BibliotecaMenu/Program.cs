@@ -36,7 +36,7 @@ class Program
                         ShowUsersMenu();
                         break;
                     case 3:
-                        Console.WriteLine("[Menú de Navegación de PRESTAMOS]");
+                        ShowLoansMenu();
                         break;
                     case 4:
                         Console.WriteLine("[Menú de Navegación de BUSQUE Y REPORTES]");
@@ -312,5 +312,136 @@ class Program
         Pause();
     }
 
-}
+    // MÓDULO DE PRÉSTAMOS (feature/loans-menu)
 
+    static void ShowLoansMenu()
+    {
+        bool back = false;
+
+        do
+        {
+            Console.WriteLine("==== MENU DE PRESTAMOS ===");
+            Console.WriteLine("1. Crear préstamo");
+            Console.WriteLine("2. Listar préstamos activos");
+            Console.WriteLine("3. Ver detalles de prestamo (por ID)");
+            Console.WriteLine("4. Registrar devolución");
+            Console.WriteLine("5. ELiminar préstamo");
+            Console.WriteLine("0. Volver al menú principal");
+            Console.WriteLine("=============================");
+
+            string input = Console.ReadLine()!;
+
+            if (int.TryParse(input, out int option))
+            {
+                switch (option)
+                {
+                    case 1:
+                        RegisterLoan();
+                        break;
+                    case 2:
+                        ListLoansMenu();
+                        break;
+                    case 3:
+                        ViewLoanDetail();
+                        break;
+                    case 4:
+                        RegisterReturn();
+                        break;
+                    case 5:
+                        DeleteLoan();
+                        break;
+                    case 0:
+                        back = true; 
+                        break;
+                    default:
+                        Console.WriteLine("\n[Error] Opción no válida en Préstamos.");
+                        Pause();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número.");
+                Pause();
+            }
+
+        } while (!back);
+    }
+
+    static void RegisterLoan()
+    {
+        Console.WriteLine("\nValidando disponibilidad del libro y estado del usuario...");
+        Console.WriteLine("\nEjecutando: Registro de Pretamo...");
+        Pause();
+    }
+
+    static void ListLoansMenu()
+    {
+        bool backList = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine(" === LISTAR PRÉSTAMO ===");
+            Console.WriteLine("1. Todos los préstamos");
+            Console.WriteLine("2. Préstamos activos");
+            Console.WriteLine("3. Préstamos cerrados");
+            Console.WriteLine("0. Volver al menú de préstamos");
+            Console.WriteLine("===============================");
+            
+
+            string input = Console.ReadLine()!;
+            if (int.TryParse(input, out int opt))
+            {
+                if (opt == 1)
+                {
+                    Console.WriteLine("\n[Stub] Listando TODOS los préstamos registrados...");
+                    Pause();
+                }
+                else if (opt == 2)
+                {
+                    Console.WriteLine("\n[Stub] Listando únicamente préstamos ACTIVOS...");
+                    Pause();
+                }
+                else if (opt == 3)
+                {
+                    Console.WriteLine("\n[Stub] Listando préstamos CERRADOS / Devueltos...");
+                    Pause();
+                }
+                else if (opt == 0)
+                {
+                    backList = true;
+                }
+                else
+                {
+                    Console.WriteLine("\n[Error] Opción no válida en el listado de préstamos.");
+                    Pause();
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida. Debe ingresar un número entero.");
+                Pause();
+            }
+        } while (!backList);
+    }
+
+    static void ViewLoanDetail()
+    {
+        Console.WriteLine("\nEjecutando: Ver detalle de préstamo por ID...");
+        Pause();
+    }
+
+    static void RegisterReturn()
+    {
+        Console.WriteLine("\nEjecutando: Registrar devolución de libro y actualizar estado...");
+        Pause();
+    }
+
+    static void DeleteLoan()
+    {
+        Console.WriteLine("\nValidando reglas de negocio:");
+        Console.WriteLine("- No se permite eliminar un préstamo activo sin registrar la devolución.");
+        Console.WriteLine("- Solo se permite anular/eliminar registros creados por error sin historial de sanciones.");
+        Pause();
+    }
+}
