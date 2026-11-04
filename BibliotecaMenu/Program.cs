@@ -42,7 +42,7 @@ class Program
                         ShowSearchReportsMenu();
                         break;
                     case 5:
-                        Console.WriteLine("[Menú de Navegación de GUARDAR Y CARGAR DATOS]");
+                        ShowPersistenceMenu();
                         break;
                     case 6:
                         Console.WriteLine("[Menú de Navegación de SALIR]");
@@ -611,6 +611,88 @@ class Program
                 Pause();
             }
         } while (!back);
+    }
+
+    // MÓDULO DE PERSISTENCIA (feature/persistence-menu) 
+
+    static void ShowPersistenceMenu()
+    {
+        bool back = false;
+        do
+        {
+            Console.WriteLine(" === GUARDAR / CARGAR DATOS === ");
+            Console.WriteLine("1. Guardar datos");
+            Console.WriteLine("2. Cargar datos");
+            Console.WriteLine("3. Reiniciar datos ");
+            Console.WriteLine("0. Volver al menú principal");
+            Console.WriteLine("==============================");
+
+            string input = Console.ReadLine()!;
+
+            if (int.TryParse(input, out int option))
+            {
+                switch (option)
+                {
+                    case 1:
+                        SaveDataStub();
+                        break;
+                    case 2:
+                        LoadDataStub();
+                        break;
+                    case 3:
+                        ResetDataStub();
+                        break;
+                    case 0:
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\n[Error] Opción no válida en Guardar / Cargar datos.");
+                        Pause();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número entero.");
+                Pause();
+            }
+
+        } while (!back);
+    }
+
+    // Subfunciones de Persistencia
+    static void SaveDataStub()
+    {
+        Console.WriteLine("\nEjecutando: Guardando información en disco...");
+        Console.WriteLine("¡Datos guardados exitosamente!");
+        Pause();
+    }
+
+    static void LoadDataStub()
+    {
+        Console.WriteLine("\nEjecutando: Cargando información desde el archivo de persistencia...");
+        Console.WriteLine("¡Datos cargados exitosamente!");
+        Pause();
+    }
+
+    static void ResetDataStub()
+    {
+        Console.Write("\n¿Está seguro de reiniciar todos los datos del sistema? (S/N): ");
+        string confirm = Console.ReadLine()!.Trim().ToUpper();
+
+        if (confirm == "S")
+        {
+            Console.WriteLine("\nRestableciendo sistema... Todos los registros han sido reiniciados.");
+        }
+        else if (confirm == "N")
+        {
+            Console.WriteLine("\nOperación cancelada. Los datos permanecen intactos.");
+        }
+        else
+        {
+            Console.WriteLine("\n[Error] Respuesta no válida. Ingrese 'S' para Sí o 'N' para No.");
+        }
+        Pause();
     }
 
 }
