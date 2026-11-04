@@ -39,7 +39,7 @@ class Program
                         ShowLoansMenu();
                         break;
                     case 4:
-                        Console.WriteLine("[Menú de Navegación de BUSQUE Y REPORTES]");
+                        ShowSearchReportsMenu();
                         break;
                     case 5:
                         Console.WriteLine("[Menú de Navegación de GUARDAR Y CARGAR DATOS]");
@@ -444,4 +444,173 @@ class Program
         Console.WriteLine("- Solo se permite anular/eliminar registros creados por error sin historial de sanciones.");
         Pause();
     }
+
+    // MÓDULO DE BÚSQUEDA Y REPORTES (feature/search-reports-menu)
+
+    static void ShowSearchReportsMenu()
+    {
+        bool back = false;
+        do
+        {
+            Console.WriteLine(" === BÚSQUEDA Y REPORTES ===");
+            Console.WriteLine("1. Buscar libro");
+            Console.WriteLine("2. Buscar usuario ");
+            Console.WriteLine("3. Reportes");
+            Console.WriteLine("0. Volver al menú principal");
+            
+
+            string input = Console.ReadLine()!;
+
+            if (int.TryParse(input, out int option))
+            {
+                switch (option)
+                {
+                    case 1:
+                        SearchBooksMenu();
+                        break;
+                    case 2:
+                        SearchUsersMenu();
+                        break;
+                    case 3:
+                        ReportsMenu();
+                        break;
+                    case 0:
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\n[Error] Opción no válida en Búsqueda y Reportes.");
+                        Pause();
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número entero.");
+                Pause();
+            }
+
+        } while (!back);
+    }
+    static void SearchBooksMenu()
+    {
+        bool back = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine(" === BUSCAR LIBRO ===");
+            Console.WriteLine("1. Buscar por título");
+            Console.WriteLine("2. Buscar por autor");
+            Console.WriteLine("3. Buscar por ID / ISBN");
+            Console.WriteLine("4. Buscar por categoría");
+            Console.WriteLine("0. Volver al menú anterior");
+            Console.WriteLine("============================");
+
+            string input = Console.ReadLine()!;
+            if (int.TryParse(input, out int opt))
+            {
+                if (opt >= 1 && opt <= 4)
+                {
+                    Console.WriteLine($"\nEjecutando búsqueda de libros por criterio {opt}...");
+                    Pause();
+                }
+                else if (opt == 0)
+                {
+                    back = true;
+                }
+                else
+                {
+                    Console.WriteLine("\n[Error] Opción no válida.");
+                    Pause();
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida.");
+                Pause();
+            }
+        } while (!back);
+    }
+
+    // --- 4.2 SUBMENÚ: BUSCAR USUARIO ---
+    static void SearchUsersMenu()
+    {
+        bool back = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine(" === BUSCAR USUARIO ===");
+            Console.WriteLine("1. Buscar por nombre");
+            Console.WriteLine("2. Buscar por ID / documento");
+            Console.WriteLine("0. Volver al menú anterior");
+            Console.WriteLine("=============================");
+            Console.Write("Seleccione una opción: ");
+
+            string input = Console.ReadLine()!;
+            if (int.TryParse(input, out int opt))
+            {
+                if (opt == 1 || opt == 2)
+                {
+                    Console.WriteLine($"\nEjecutando búsqueda de usuarios por criterio {opt}...");
+                    Pause();
+                }
+                else if (opt == 0)
+                {
+                    back = true;
+                }
+                else
+                {
+                    Console.WriteLine("\n[Error] Opción no válida.");
+                    Pause();
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida.");
+                Pause();
+            }
+        } while (!back);
+    }
+
+    // --- 4.3 SUBMENÚ: REPORTES ---
+    static void ReportsMenu()
+    {
+        bool back = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine(" === REPORTES ===");
+            Console.WriteLine("1. Reporte por usuario");
+            Console.WriteLine("2. Reporte por libro");
+            Console.WriteLine("3. Reporte de préstamos vencidos");
+            Console.WriteLine("4. Reporte resumen general");
+            Console.WriteLine("0. Volver al menú anterior");
+            Console.WriteLine("===============================");
+            Console.Write("Seleccione una opción: ");
+
+            string input = Console.ReadLine()!;
+            if (int.TryParse(input, out int opt))
+            {
+                if (opt >= 1 && opt <= 4)
+                {
+                    Console.WriteLine($"\nGenerando reporte opción {opt}...");
+                    Pause();
+                }
+                else if (opt == 0)
+                {
+                    back = true;
+                }
+                else
+                {
+                    Console.WriteLine("\n[Error] Opción no válida.");
+                    Pause();
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida.");
+                Pause();
+            }
+        } while (!back);
+    }
+
 }
