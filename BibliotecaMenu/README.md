@@ -8,9 +8,7 @@
 
 1. [Descripción General](#-descripción-general)
 2. [Características Principales](#-características-principales)
-3. [Arquitectura y Metodología](#-arquitectura-y-metodología)
-4. [Estructura del Menú Principal](#-estructura-del-menú-principal)
-5. [Evidencia de Ejecución (Capturas de Pantalla)](#-evidencia-de-ejecución-capturas-de-pantalla)
+3. [Evidencia de Ejecución (Capturas de Pantalla)](#-evidencia-de-ejecución-capturas-de-pantalla)
 
 
 ---
@@ -33,18 +31,6 @@ El desarrollo prioriza el uso de buenas prácticas en programación procedural (
 - **Flujo de Salida Limpio:** Salida controlada con prompt de guardado previo y limpieza de interfaz en consola.
 
 ---
-
-## 🛠️ Arquitectura y Metodología
-
-- **Lenguaje / Framework:** C# (.NET Core / .NET Console Application)
-- **Paradigma:** Programación Procedural / Estructurada (`static methods`, variables locales, flujo de control procedural).
-- **Flujo de Trabajo (Git Flow):**
-  - `main`: Código de producción y releases estables (`v1.0.0`).
-  - `develop`: Integración continua de módulos.
-  - `feature/*`: Desarrollos modulares aislados (`feature/books-menu`, `feature/users-menu`, `feature/loans-menu`, `feature/search-reports-menu`, `feature/persistence-menu`, `feature/exit-flow`).
-
----
-
 
 ## 📸 Evidencia de Ejecución (Capturas de Pantalla)
 
