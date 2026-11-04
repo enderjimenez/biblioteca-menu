@@ -130,8 +130,51 @@ class Program
 
     static void ListBooksMenu()
     {
-        Console.WriteLine("\nListando libros (Todos / Disponilbles / Prestados)");
-        Pause();
+        bool backList = false;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine(" === LISTAR LIBROS === ");
+            Console.WriteLine("1. Listar todos");
+            Console.WriteLine("2. Listar disponibles");
+            Console.WriteLine("3. Listar prestados");
+            Console.WriteLine("0. Volver al menú de libros");
+            Console.WriteLine("==============================");
+
+            string input = Console.ReadLine()!;
+            if (int.TryParse(input, out int opt))
+            {
+                if (opt == 1)
+                {
+                    Console.WriteLine("\n[Stub] Listando TODOS los libros registrados...");
+                    Pause();
+                }
+                else if (opt == 2)
+                {
+                    Console.WriteLine("\n[Stub] Listando libros DISPONIBLES para préstamo...");
+                    Pause();
+                }
+                else if (opt == 3)
+                {
+                    Console.WriteLine("\n[Stub] Listando libros en estado PRESTADO...");
+                    Pause();
+                }
+                else if (opt == 0)
+                {
+                    backList = true;
+                }
+                else
+                {
+                    Console.WriteLine("\n[Error] Opción no válida.");
+                    Pause();
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número entero.");
+                Pause();
+            }
+        } while (!backList);
     }
 
     static void ViewBookDatail()
