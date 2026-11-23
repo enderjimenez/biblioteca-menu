@@ -60,5 +60,21 @@ namespace BibliotecaMenu.Services
         {
             return libros.OrderBy(l => l.Titulo).ToList();
         }
+
+        // KPIs y estadísticas
+        public int ObtenerTotalLibros()
+        {
+            return libros.Count;
+        }
+
+        public int ObtenerLibrosDisponibles()
+        {
+            return libros.Count(l => l.Disponible);
+        }
+
+        public int ObtenerLibrosPrestados()
+        {
+            return libros.Count(l => !l.Disponible);
+        }
     }
 }

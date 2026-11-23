@@ -46,5 +46,32 @@ namespace BibliotecaMenu.Services
         {
             return prestamos.OrderBy(p => p.FechaLimite).ToList();
         }
+
+        // KPIs y estadísticas
+        public int ObtenerTotalPrestamos()
+        {
+            return prestamos.Count;
+        }
+
+        public int ObtenerPrestamosActivos()
+        {
+            return prestamos.Count(p => p.Estado == EstadoPrestamo.Activo && !p.EstaVencido());
+        }
+
+        public int ObtenerPrestamosVencidos()
+        {
+            return prestamos.Count(p => p.Estado == EstadoPrestamo.Vencido || p.EstaVencido());
+        }
+
+        public int ObtenerPrestamosDevueltos()
+        {
+            return prestamos.Count(p => p.Estado == EstadoPrestamo.Devuelto);
+        }
+
+        public double ObtenerPromedioDiasPrestamo()
+        {
+            if (prestamos.Count == 0) return 0;
+            return prestamos.Average(p => p.DiasTranscurridos());
+        }
     }
 }

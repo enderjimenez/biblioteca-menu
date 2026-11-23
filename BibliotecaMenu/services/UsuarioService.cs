@@ -51,5 +51,21 @@ namespace BibliotecaMenu.Services
         {
             return usuarios.OrderBy(u => u.Nombre).ToList();
         }
+
+        // KPIs y estadísticas
+        public int ObtenerTotalUsuarios()
+        {
+            return usuarios.Count;
+        }
+
+        public int ObtenerUsuariosActivos()
+        {
+            return usuarios.Count(u => u.Activo);
+        }
+
+        public int ObtenerUsuariosInactivos()
+        {
+            return usuarios.Count(u => !u.Activo);
+        }
     }
 }
