@@ -7,10 +7,10 @@ namespace BibliotecaMenu.Services
 {
     public class PrestamoService
     {
-        //coleccion dinamica 
+        // Colección dinámica
         private List<Prestamo> prestamos = new List<Prestamo>();
 
-        // Operaciones basicas
+        // Operaciones básicas
         public void AgregarPrestamo(Prestamo prestamo)
         {
             prestamos.Add(prestamo);
@@ -27,9 +27,13 @@ namespace BibliotecaMenu.Services
             return false;
         }
 
-        // Búsquedas (por ID o estado)
+        public List<Prestamo> ObtenerTodos()
+        {
+            return prestamos;
+        }
 
-        public Prestamo? BusquedaPorId(int id)
+        // Búsquedas (por ID o estado)
+        public Prestamo? BuscarPorId(int id)
         {
             return prestamos.FirstOrDefault(p => p.Id == id);
         }

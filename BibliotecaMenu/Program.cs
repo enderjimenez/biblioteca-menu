@@ -1,779 +1,525 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
+using BibliotecaMen.Models;
+using BibliotecaMenu.Models;
+using BibliotecaMenu.Services;
 
-class Program
+namespace BibliotecaMenu
 {
-    static void Main(String[] args)
+    internal class Program
     {
-        ShowMainMenu();
-    }
+        // Instancias globales de la capa Services
+        static LibroServices libroService = new LibroServices();
+        static UsuarioService usuarioService = new UsuarioService();
+        static PrestamoService prestamoService = new PrestamoService();
 
-    // Menú principal de la biblioteca 
-
-    static void ShowMainMenu()
-    {
-        bool exit = false;
-        do
+        static void Main(string[] args)
         {
-            Console.WriteLine("=== MENU PRINCIPAL ===");
-            Console.WriteLine("1. Libros");
-            Console.WriteLine("2. Usuarios");
-            Console.WriteLine("3. Prestamos");
-            Console.WriteLine("4. Búsqueda y reportes");
-            Console.WriteLine("5. Guardar / Cargar datos");
-            Console.WriteLine("6. Salir");
+            CargarDatosIniciales();
 
-            String input = Console.ReadLine()!;
-
-            if (int.TryParse(input, out int opcion))
+            bool ejecutando = true;
+            while (ejecutando)
             {
+                Console.Clear();
+                Console.WriteLine("=======================================================");
+                Console.WriteLine("         SISTEMA DE GESTIÓN DE BIBLIOTECA (POO)        ");
+                Console.WriteLine("=======================================================");
+                Console.WriteLine("1. Gestión de Libros");
+                Console.WriteLine("2. Gestión de Usuarios");
+                Console.WriteLine("3. Gestión de Préstamos y Devoluciones");
+                Console.WriteLine("4. Reportes y KPIs del Sistema");
+                Console.WriteLine("0. Salir");
+                Console.WriteLine("-------------------------------------------------------");
+                Console.Write("Seleccione una opción: ");
+
+                string? opcion = Console.ReadLine();
+
                 switch (opcion)
                 {
-                    case 1:
-                        ShowBooksMenu();
+                    case "1":
+                        MenuLibros();
                         break;
-                    case 2:
-                        ShowUsersMenu();
+                    case "2":
+                        MenuUsuarios();
                         break;
-                    case 3:
-                        ShowLoansMenu();
+                    case "3":
+                        MenuPrestamos();
                         break;
-                    case 4:
-                        ShowSearchReportsMenu();
+                    case "4":
+                        MostrarKpisGenerales();
                         break;
-                    case 5:
-                        ShowPersistenceMenu();
-                        break;
-                    case 6:
-                        ConfirmExitAndSave();
+                    case "0":
+                        ejecutando = false;
+                        Console.WriteLine("\nSaliendo del sistema...");
                         break;
                     default:
-                        Console.WriteLine("[Error] Opción no valida. Por favor, ingrese un número entre 1 y 6.");
+                        Console.WriteLine("\nOpción no válida.");
+                        Pausar();
                         break;
                 }
             }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Debe ingresar un número entero.");
-            }
-
-        } while (!exit);
-    }
-
-    // MODULO DE LIBROS (feature/books-menu)
-    static void ShowBooksMenu()
-    {
-        bool back = false;
-
-        do
-        {
-            Console.WriteLine("=== GESTIÓN DE LIBROS ===");
-            Console.WriteLine("1. Registrar libro");
-            Console.WriteLine("2. Listar Libros");
-            Console.WriteLine("3. Ver detalle (por ID/ISBN)");
-            Console.WriteLine("4. Actualizar libro");
-            Console.WriteLine("5. Eliminar libro");
-            Console.WriteLine("0. Volver al menú principal");
-            Console.WriteLine("============================");
-
-            String input = Console.ReadLine()!;
-
-            if (int.TryParse(input, out int opcion))
-            {
-                switch (opcion)
-                {
-                    case 1:
-                        RegisterBook();
-                        break;
-
-                    case 2:
-                        ListBooksMenu();
-                        break;
-
-                    case 3:
-                        ViewBookDatail();
-                        break;
-
-                    case 4:
-                        UpdateBookMenu();
-                        break;
-
-                    case 5:
-                        DeleteBook();
-                        break;
-
-                    case 0:
-                        back = true;
-                        break;
-
-                    default:
-                        Console.WriteLine("[Error] Opción no valida en libros");
-                        Pause();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número.");
-            }
-
-        } while (!back);
-    }
-
-    // Suvfunciones de libros
-
-    static void RegisterBook()
-    {
-        Console.WriteLine("\nEjecutando: Registrar libro...");
-        Pause();
-    }
-
-    static void ListBooksMenu()
-    {
-        bool backList = false;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine(" === LISTAR LIBROS === ");
-            Console.WriteLine("1. Listar todos");
-            Console.WriteLine("2. Listar disponibles");
-            Console.WriteLine("3. Listar prestados");
-            Console.WriteLine("0. Volver al menú de libros");
-            Console.WriteLine("==============================");
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt == 1)
-                {
-                    Console.WriteLine("\n[Stub] Listando TODOS los libros registrados...");
-                    Pause();
-                }
-                else if (opt == 2)
-                {
-                    Console.WriteLine("\n[Stub] Listando libros DISPONIBLES para préstamo...");
-                    Pause();
-                }
-                else if (opt == 3)
-                {
-                    Console.WriteLine("\n[Stub] Listando libros en estado PRESTADO...");
-                    Pause();
-                }
-                else if (opt == 0)
-                {
-                    backList = true;
-                }
-                else
-                {
-                    Console.WriteLine("\n[Error] Opción no válida.");
-                    Pause();
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número entero.");
-                Pause();
-            }
-        } while (!backList);
-    }
-
-    static void ViewBookDatail()
-    {
-        Console.WriteLine("\nEjecutando: Ver detaller del libro por ID/ISBN...");
-        Pause();
-    }
-
-    static void UpdateBookMenu()
-    {
-        bool backUpdate = false;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine("--- ACTUALIZAR LIBRO ---");
-            Console.WriteLine("1. Editar título");
-            Console.WriteLine("2. Editar autor");
-            Console.WriteLine("3. Editar año o categoría");
-            Console.WriteLine("0. Volver al menú de libros");
-            Console.Write("Seleccione una opción: ");
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt == 1) 
-                { 
-                    Console.WriteLine("\n[Stub] Editando título del libro..."); 
-                    Pause(); 
-                }
-                else if (opt == 2) 
-                { 
-                    Console.WriteLine("\n[Stub] Editando autor del libro..."); 
-                    Pause(); 
-                }
-                else if (opt == 3) 
-                { 
-                    Console.WriteLine("\n[Stub] Editando año o categoría del libro..."); 
-                    Pause(); 
-                }
-                else if (opt == 0) 
-                { 
-                    backUpdate = true; 
-                }
-                else 
-                { 
-                    Console.WriteLine("\n[Error] Opción inválida."); 
-                    Pause(); 
-                }
-            }
-            else 
-            { 
-                Console.WriteLine("\n[Error] Entrada inválida."); 
-                Pause(); 
-            }
-        } while (!backUpdate);
-    }
-
-    static void DeleteBook()
-    {
-        Console.WriteLine("\n Validando: No permitir eliminar si el libro está prestado...");
-        Pause();
-    }
-
-    static void Pause()
-    {
-        Console.WriteLine("\nPresione cualquier tecla para continuar...");
-        Console.ReadKey();
-    }
-
-    // MÓDULO DE USUARIOS (feature/users-menu)
-
-    static void ShowUsersMenu()
-    {
-        bool back = false;
-
-        do
-        {
-            Console.WriteLine(" === GESTIÓN DE USUARIOS ===");
-            Console.WriteLine("1. Registrar usuario");
-            Console.WriteLine("2. Listar usuarios");
-            Console.WriteLine("3. Ver detalle (por ID/documento)");
-            Console.WriteLine("4. Actualizar usuario");
-            Console.WriteLine("5. Eliminar usuario");
-            Console.WriteLine("0. Volver al menú principal");
-            Console.WriteLine("============================");
-
-            String input = Console.ReadLine()!;
-
-            if (int.TryParse(input, out int opcion))
-            {
-                switch (opcion)
-                {
-                    case 1:
-                        RegisterUser();
-                        break;
-                    case 2:
-                        ListUsers();
-                        break;
-                    case 3:
-                        ViewUserDetail();
-                        break;
-                    case 4:
-                        UpdateUserMenu();
-                        break;
-                    case 5:
-                        DeleteUser();
-                        break;
-                    case 0:
-                        back = true; // Regresa al menú principal
-                        break;
-                    default:
-                        Console.WriteLine("\n[Error] Opción no válida en Usuarios.");
-                        Pause();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número.");
-                Pause();
-            }
-        } while (!back);
-    }
-
-    // Subfunciones de Usuarios (Stubs / Mensajes descriptivos)
-    static void RegisterUser()
-    {
-        Console.WriteLine("\n[Stub] Ejecutando: Registrar usuario...");
-        Pause();
-    }
-
-    static void ListUsers()
-    {
-        Console.WriteLine("\n[Stub] Ejecutando: Listar usuarios registrados...");
-        Pause();
-    }
-
-    static void ViewUserDetail()
-    {
-        Console.WriteLine("\n[Stub] Ejecutando: Ver detalle de usuario por ID o documento...");
-        Pause();
-    }
-
-    static void UpdateUserMenu()
-    {
-        bool backUpdate = false;
-        do
-        {
-
-            Console.WriteLine("--- ACTUALIZAR USUARIO ---");
-            Console.WriteLine("1. Editar nombre");
-            Console.WriteLine("2. Editar contacto");
-            Console.WriteLine("3. Activar / Desactivar usuario");
-            Console.WriteLine("0. Volver al menú de usuarios");
-            Console.Write("Seleccione una opción: ");
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt == 1)
-                 { Console.WriteLine("\nEditando nombre de usuario..."); Pause(); }
-                else if (opt == 2) 
-                { Console.WriteLine("\nEditando contacto de usuario..."); Pause(); }
-                else if (opt == 3) 
-                { Console.WriteLine("\nCambiando estado activo/inactivo..."); Pause(); }
-                else if (opt == 0) 
-                { backUpdate = true; }
-                else 
-                { Console.WriteLine("\n[Error] Opción inválida."); Pause(); }
-            }
-            else { Console.WriteLine("\n[Error] Entrada inválida."); Pause(); }
-        } while (!backUpdate);
-    }
-
-    static void DeleteUser()
-    {
-        Console.WriteLine("\n[Stub] Validando: No permitir eliminar si tiene préstamos activos...");
-        Pause();
-    }
-
-    // MÓDULO DE PRÉSTAMOS (feature/loans-menu)
-
-    static void ShowLoansMenu()
-    {
-        bool back = false;
-
-        do
-        {
-            Console.WriteLine("==== MENU DE PRESTAMOS ===");
-            Console.WriteLine("1. Crear préstamo");
-            Console.WriteLine("2. Listar préstamos activos");
-            Console.WriteLine("3. Ver detalles de prestamo (por ID)");
-            Console.WriteLine("4. Registrar devolución");
-            Console.WriteLine("5. ELiminar préstamo");
-            Console.WriteLine("0. Volver al menú principal");
-            Console.WriteLine("=============================");
-
-            string input = Console.ReadLine()!;
-
-            if (int.TryParse(input, out int option))
-            {
-                switch (option)
-                {
-                    case 1:
-                        RegisterLoan();
-                        break;
-                    case 2:
-                        ListLoansMenu();
-                        break;
-                    case 3:
-                        ViewLoanDetail();
-                        break;
-                    case 4:
-                        RegisterReturn();
-                        break;
-                    case 5:
-                        DeleteLoan();
-                        break;
-                    case 0:
-                        back = true; 
-                        break;
-                    default:
-                        Console.WriteLine("\n[Error] Opción no válida en Préstamos.");
-                        Pause();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número.");
-                Pause();
-            }
-
-        } while (!back);
-    }
-
-    static void RegisterLoan()
-    {
-        Console.WriteLine("\nValidando disponibilidad del libro y estado del usuario...");
-        Console.WriteLine("\nEjecutando: Registro de Pretamo...");
-        Pause();
-    }
-
-    static void ListLoansMenu()
-    {
-        bool backList = false;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine(" === LISTAR PRÉSTAMO ===");
-            Console.WriteLine("1. Todos los préstamos");
-            Console.WriteLine("2. Préstamos activos");
-            Console.WriteLine("3. Préstamos cerrados");
-            Console.WriteLine("0. Volver al menú de préstamos");
-            Console.WriteLine("===============================");
-            
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt == 1)
-                {
-                    Console.WriteLine("\n[Stub] Listando TODOS los préstamos registrados...");
-                    Pause();
-                }
-                else if (opt == 2)
-                {
-                    Console.WriteLine("\n[Stub] Listando únicamente préstamos ACTIVOS...");
-                    Pause();
-                }
-                else if (opt == 3)
-                {
-                    Console.WriteLine("\n[Stub] Listando préstamos CERRADOS / Devueltos...");
-                    Pause();
-                }
-                else if (opt == 0)
-                {
-                    backList = true;
-                }
-                else
-                {
-                    Console.WriteLine("\n[Error] Opción no válida en el listado de préstamos.");
-                    Pause();
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Debe ingresar un número entero.");
-                Pause();
-            }
-        } while (!backList);
-    }
-
-    static void ViewLoanDetail()
-    {
-        Console.WriteLine("\nEjecutando: Ver detalle de préstamo por ID...");
-        Pause();
-    }
-
-    static void RegisterReturn()
-    {
-        Console.WriteLine("\nEjecutando: Registrar devolución de libro y actualizar estado...");
-        Pause();
-    }
-
-    static void DeleteLoan()
-    {
-        Console.WriteLine("\nValidando reglas de negocio:");
-        Console.WriteLine("- No se permite eliminar un préstamo activo sin registrar la devolución.");
-        Console.WriteLine("- Solo se permite anular/eliminar registros creados por error sin historial de sanciones.");
-        Pause();
-    }
-
-    // MÓDULO DE BÚSQUEDA Y REPORTES (feature/search-reports-menu)
-
-    static void ShowSearchReportsMenu()
-    {
-        bool back = false;
-        do
-        {
-            Console.WriteLine(" === BÚSQUEDA Y REPORTES ===");
-            Console.WriteLine("1. Buscar libro");
-            Console.WriteLine("2. Buscar usuario ");
-            Console.WriteLine("3. Reportes");
-            Console.WriteLine("0. Volver al menú principal");
-            
-
-            string input = Console.ReadLine()!;
-
-            if (int.TryParse(input, out int option))
-            {
-                switch (option)
-                {
-                    case 1:
-                        SearchBooksMenu();
-                        break;
-                    case 2:
-                        SearchUsersMenu();
-                        break;
-                    case 3:
-                        ReportsMenu();
-                        break;
-                    case 0:
-                        back = true;
-                        break;
-                    default:
-                        Console.WriteLine("\n[Error] Opción no válida en Búsqueda y Reportes.");
-                        Pause();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número entero.");
-                Pause();
-            }
-
-        } while (!back);
-    }
-    static void SearchBooksMenu()
-    {
-        bool back = false;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine(" === BUSCAR LIBRO ===");
-            Console.WriteLine("1. Buscar por título");
-            Console.WriteLine("2. Buscar por autor");
-            Console.WriteLine("3. Buscar por ID / ISBN");
-            Console.WriteLine("4. Buscar por categoría");
-            Console.WriteLine("0. Volver al menú anterior");
-            Console.WriteLine("============================");
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt >= 1 && opt <= 4)
-                {
-                    Console.WriteLine($"\nEjecutando búsqueda de libros por criterio {opt}...");
-                    Pause();
-                }
-                else if (opt == 0)
-                {
-                    back = true;
-                }
-                else
-                {
-                    Console.WriteLine("\n[Error] Opción no válida.");
-                    Pause();
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida.");
-                Pause();
-            }
-        } while (!back);
-    }
-
-    // --- 4.2 SUBMENÚ: BUSCAR USUARIO ---
-    static void SearchUsersMenu()
-    {
-        bool back = false;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine(" === BUSCAR USUARIO ===");
-            Console.WriteLine("1. Buscar por nombre");
-            Console.WriteLine("2. Buscar por ID / documento");
-            Console.WriteLine("0. Volver al menú anterior");
-            Console.WriteLine("=============================");
-            Console.Write("Seleccione una opción: ");
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt == 1 || opt == 2)
-                {
-                    Console.WriteLine($"\nEjecutando búsqueda de usuarios por criterio {opt}...");
-                    Pause();
-                }
-                else if (opt == 0)
-                {
-                    back = true;
-                }
-                else
-                {
-                    Console.WriteLine("\n[Error] Opción no válida.");
-                    Pause();
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida.");
-                Pause();
-            }
-        } while (!back);
-    }
-
-    // --- 4.3 SUBMENÚ: REPORTES ---
-    static void ReportsMenu()
-    {
-        bool back = false;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine(" === REPORTES ===");
-            Console.WriteLine("1. Reporte por usuario");
-            Console.WriteLine("2. Reporte por libro");
-            Console.WriteLine("3. Reporte de préstamos vencidos");
-            Console.WriteLine("4. Reporte resumen general");
-            Console.WriteLine("0. Volver al menú anterior");
-            Console.WriteLine("===============================");
-            Console.Write("Seleccione una opción: ");
-
-            string input = Console.ReadLine()!;
-            if (int.TryParse(input, out int opt))
-            {
-                if (opt >= 1 && opt <= 4)
-                {
-                    Console.WriteLine($"\nGenerando reporte opción {opt}...");
-                    Pause();
-                }
-                else if (opt == 0)
-                {
-                    back = true;
-                }
-                else
-                {
-                    Console.WriteLine("\n[Error] Opción no válida.");
-                    Pause();
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida.");
-                Pause();
-            }
-        } while (!back);
-    }
-
-    // MÓDULO DE PERSISTENCIA (feature/persistence-menu) 
-
-    static void ShowPersistenceMenu()
-    {
-        bool back = false;
-        do
-        {
-            Console.WriteLine(" === GUARDAR / CARGAR DATOS === ");
-            Console.WriteLine("1. Guardar datos");
-            Console.WriteLine("2. Cargar datos");
-            Console.WriteLine("3. Reiniciar datos ");
-            Console.WriteLine("0. Volver al menú principal");
-            Console.WriteLine("==============================");
-
-            string input = Console.ReadLine()!;
-
-            if (int.TryParse(input, out int option))
-            {
-                switch (option)
-                {
-                    case 1:
-                        SaveDataStub();
-                        break;
-                    case 2:
-                        LoadDataStub();
-                        break;
-                    case 3:
-                        ResetDataStub();
-                        break;
-                    case 0:
-                        back = true;
-                        break;
-                    default:
-                        Console.WriteLine("\n[Error] Opción no válida en Guardar / Cargar datos.");
-                        Pause();
-                        break;
-                }
-            }
-            else
-            {
-                Console.WriteLine("\n[Error] Entrada inválida. Ingrese un número entero.");
-                Pause();
-            }
-
-        } while (!back);
-    }
-
-    // Subfunciones de Persistencia
-    static void SaveDataStub()
-    {
-        Console.WriteLine("\nEjecutando: Guardando información en disco...");
-        Console.WriteLine("¡Datos guardados exitosamente!");
-        Pause();
-    }
-
-    static void LoadDataStub()
-    {
-        Console.WriteLine("\nEjecutando: Cargando información desde el archivo de persistencia...");
-        Console.WriteLine("¡Datos cargados exitosamente!");
-        Pause();
-    }
-
-    static void ResetDataStub()
-    {
-        Console.Write("\n¿Está seguro de reiniciar todos los datos del sistema? (S/N): ");
-        string confirm = Console.ReadLine()!.Trim().ToUpper();
-
-        if (confirm == "S")
-        {
-            Console.WriteLine("\nRestableciendo sistema... Todos los registros han sido reiniciados.");
         }
-        else if (confirm == "N")
+
+        // Datos semilla para que el sistema arranque con registros listos para probar
+        static void CargarDatosIniciales()
         {
-            Console.WriteLine("\nOperación cancelada. Los datos permanecen intactos.");
+            Libro l1 = new Libro(1, "978-0132350884", "Clean Code", "Robert C. Martin", "Ingeniería de Software", false);
+            Libro l2 = new Libro(2, "978-0201616224", "The Pragmatic Programmer", "Andrew Hunt", "Desarrollo", true);
+            Libro l3 = new Libro(3, "978-0131103627", "C Programming Language", "Kernighan & Ritchie", "Lenguajes", true);
+
+            libroService.AgregarLibro(l1);
+            libroService.AgregarLibro(l2);
+            libroService.AgregarLibro(l3);
+
+            Usuario u1 = new Usuario(101, "10203040", "Ender Jiménez", "enderst2019@gail.com", true);
+            Usuario u2 = new Usuario(102, "50607080", "Sebastián Serna", "sebastian@email.com", true);
+            Usuario u3 = new Usuario(103, "90102030", "Carlos Pérez", "carlos@email.com", false);
+
+            usuarioService.AgregarUsuario(u1);
+            usuarioService.AgregarUsuario(u2);
+            usuarioService.AgregarUsuario(u3);
+
+            // Préstamo activo asociado al libro 1 (por eso l1 nace con disponible = false)
+            Prestamo p1 = new Prestamo(501, l1, u1, DateTime.Now.AddDays(-3), DateTime.Now.AddDays(4));
+            prestamoService.AgregarPrestamo(p1);
         }
-        else
+
+        // =======================================================
+        // SUBMENÚ 1: LIBROS
+        // =======================================================
+        static void MenuLibros()
         {
-            Console.WriteLine("\n[Error] Respuesta no válida. Ingrese 'S' para Sí o 'N' para No.");
-        }
-        Pause();
-    }
-
-    // FLUJO DE SALIDA (feature/exit-flow)
-
-    static bool ConfirmExitAndSave()
-    {
-        bool validAnswer = false;
-        bool shouldExit = false;
-
-        do
-        {
-            Console.WriteLine(" === SALIR === ");
-            Console.Write("¿Guardar antes de salir? (S/N): ");
-            
-            string input = Console.ReadLine()!.Trim().ToUpper();
-
-            if (input == "S")
+            bool volver = false;
+            while (!volver)
             {
-                SaveDataStub();
-                Console.WriteLine("\n[Sistema] Datos guardados exitosamente. Cerrando aplicación...");
-                validAnswer = true;
-                shouldExit = true;
+                Console.Clear();
+                Console.WriteLine("=== GESTIÓN DE LIBROS ===");
+                Console.WriteLine("1. Registrar nuevo libro");
+                Console.WriteLine("2. Listar todos los libros");
+                Console.WriteLine("3. Listar libros ordenados por título");
+                Console.WriteLine("4. Buscar libro por ISBN");
+                Console.WriteLine("5. Buscar libros por título o autor");
+                Console.WriteLine("6. Eliminar libro por ID");
+                Console.WriteLine("0. Volver al menú principal");
+                Console.Write("\nSeleccione una opción: ");
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        RegistrarLibro();
+                        break;
+                    case "2":
+                        MostrarListaLibros(libroService.ObtenerTodos(), "LISTADO DE LIBROS");
+                        break;
+                    case "3":
+                        MostrarListaLibros(libroService.OrdenarPorTitulo(), "LIBROS ORDENADOS POR TÍTULO");
+                        break;
+                    case "4":
+                        Console.Write("\nIngrese ISBN a buscar: ");
+                        string isbn = Console.ReadLine() ?? "";
+                        Libro? encontrado = libroService.BuscarPorIsbn(isbn);
+                        Console.WriteLine(encontrado != null ? $"\n{encontrado.DetalleCompleto()}" : "\nLibro no encontrado.");
+                        Pausar();
+                        break;
+                    case "5":
+                        Console.Write("\nIngrese término de búsqueda (título o autor): ");
+                        string texto = Console.ReadLine() ?? "";
+                        var porTitulo = libroService.BuscarPorTitulo(texto);
+                        var porAutor = libroService.BuscarPorAutor(texto);
+                        var combinados = porTitulo.Union(porAutor).ToList();
+                        MostrarListaLibros(combinados, $"RESULTADOS PARA '{texto}'");
+                        break;
+                    case "6":
+                        Console.Write("\nIngrese ID del libro a eliminar: ");
+                        if (int.TryParse(Console.ReadLine(), out int idEliminar))
+                        {
+                            bool eliminado = libroService.EliminarLibro(idEliminar);
+                            Console.WriteLine(eliminado ? "Libro eliminado correctamente." : "No se encontró un libro con ese ID.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID inválido.");
+                        }
+                        Pausar();
+                        break;
+                    case "0":
+                        volver = true;
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
+                        Pausar();
+                        break;
+                }
             }
-            else if (input == "N")
+        }
+
+        static void RegistrarLibro()
+        {
+            Console.WriteLine("\n--- REGISTRAR LIBRO ---");
+            Console.Write("ID numérico: ");
+            if (!int.TryParse(Console.ReadLine(), out int id) || libroService.ObtenerTodos().Any(l => l.Id == id))
             {
-                Console.WriteLine("\n[Sistema] Saliendo sin guardar cambios. Cerrando aplicación...");
-                validAnswer = true;
-                shouldExit = true;
+                Console.WriteLine("ID inválido o ya existente.");
+                Pausar();
+                return;
+            }
+
+            Console.Write("ISBN: ");
+            string isbn = Console.ReadLine() ?? "";
+            Console.Write("Título: ");
+            string titulo = Console.ReadLine() ?? "";
+            Console.Write("Autor: ");
+            string autor = Console.ReadLine() ?? "";
+            Console.Write("Categoría: ");
+            string categoria = Console.ReadLine() ?? "";
+
+            Libro nuevo = new Libro(id, isbn, titulo, autor, categoria, true);
+            libroService.AgregarLibro(nuevo);
+            Console.WriteLine("\nLibro registrado exitosamente.");
+            Pausar();
+        }
+
+        static void MostrarListaLibros(List<Libro> lista, string tituloEncabezado)
+        {
+            Console.WriteLine($"\n--- {tituloEncabezado} ({lista.Count}) ---");
+            if (lista.Count == 0)
+            {
+                Console.WriteLine("No hay libros para mostrar.");
             }
             else
             {
-                Console.WriteLine("\n[Error] Opción inválida. Ingrese 'S' para Sí o 'N' para No.");
-                
+                foreach (var libro in lista)
+                {
+                    Console.WriteLine($"  * {libro.ResumenCorto()}");
+                }
+            }
+            Pausar();
+        }
+
+        // =======================================================
+        // SUBMENÚ 2: USUARIOS
+        // =======================================================
+        static void MenuUsuarios()
+        {
+            bool volver = false;
+            while (!volver)
+            {
+                Console.Clear();
+                Console.WriteLine("=== GESTIÓN DE USUARIOS ===");
+                Console.WriteLine("1. Registrar nuevo usuario");
+                Console.WriteLine("2. Listar todos los usuarios");
+                Console.WriteLine("3. Listar usuarios ordenados por nombre");
+                Console.WriteLine("4. Buscar usuario por documento");
+                Console.WriteLine("5. Buscar usuarios por nombre");
+                Console.WriteLine("6. Eliminar usuario por ID");
+                Console.WriteLine("0. Volver al menú principal");
+                Console.Write("\nSeleccione una opción: ");
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        RegistrarUsuario();
+                        break;
+                    case "2":
+                        MostrarListaUsuarios(usuarioService.ObtenerTodos(), "LISTADO DE USUARIOS");
+                        break;
+                    case "3":
+                        MostrarListaUsuarios(usuarioService.OrdenarPorNombre(), "USUARIOS ORDENADOS POR NOMBRE");
+                        break;
+                    case "4":
+                        Console.Write("\nIngrese documento a buscar: ");
+                        string doc = Console.ReadLine() ?? "";
+                        Usuario? encontrado = usuarioService.BuscarPorDocumento(doc);
+                        Console.WriteLine(encontrado != null ? $"\n{encontrado.DetalleCompleto()}" : "\nUsuario no encontrado.");
+                        Pausar();
+                        break;
+                    case "5":
+                        Console.Write("\nIngrese nombre a buscar: ");
+                        string nombre = Console.ReadLine() ?? "";
+                        MostrarListaUsuarios(usuarioService.BuscarPorNombre(nombre), $"RESULTADOS PARA '{nombre}'");
+                        break;
+                    case "6":
+                        Console.Write("\nIngrese ID del usuario a eliminar: ");
+                        if (int.TryParse(Console.ReadLine(), out int idEliminar))
+                        {
+                            bool eliminado = usuarioService.EliminarUsuario(idEliminar);
+                            Console.WriteLine(eliminado ? "Usuario eliminado correctamente." : "No se encontró un usuario con ese ID.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID inválido.");
+                        }
+                        Pausar();
+                        break;
+                    case "0":
+                        volver = true;
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
+                        Pausar();
+                        break;
+                }
+            }
+        }
+
+        static void RegistrarUsuario()
+        {
+            Console.WriteLine("\n--- REGISTRAR USUARIO ---");
+            Console.Write("ID numérico: ");
+            if (!int.TryParse(Console.ReadLine(), out int id) || usuarioService.ObtenerTodos().Any(u => u.Id == id))
+            {
+                Console.WriteLine("ID inválido o ya existente.");
+                Pausar();
+                return;
             }
 
-        } while (!validAnswer);
-        Console.Clear();
-        return shouldExit;
-    
+            Console.Write("Documento: ");
+            string documento = Console.ReadLine() ?? "";
+            Console.Write("Nombre completo: ");
+            string nombre = Console.ReadLine() ?? "";
+            Console.Write("Correo electrónico: ");
+            string correo = Console.ReadLine() ?? "";
+
+            Usuario nuevo = new Usuario(id, documento, nombre, correo, true);
+            usuarioService.AgregarUsuario(nuevo);
+            Console.WriteLine("\nUsuario registrado exitosamente.");
+            Pausar();
+        }
+
+        static void MostrarListaUsuarios(List<Usuario> lista, string tituloEncabezado)
+        {
+            Console.WriteLine($"\n--- {tituloEncabezado} ({lista.Count}) ---");
+            if (lista.Count == 0)
+            {
+                Console.WriteLine("No hay usuarios para mostrar.");
+            }
+            else
+            {
+                foreach (var usuario in lista)
+                {
+                    Console.WriteLine($"  * {usuario.ResumenCorto()}");
+                }
+            }
+            Pausar();
+        }
+
+        // =======================================================
+        // SUBMENÚ 3: PRÉSTAMOS Y DEVOLUCIONES
+        // =======================================================
+        static void MenuPrestamos()
+        {
+            bool volver = false;
+            while (!volver)
+            {
+                Console.Clear();
+                Console.WriteLine("=== GESTIÓN DE PRÉSTAMOS Y DEVOLUCIONES ===");
+                Console.WriteLine("1. Registrar nuevo préstamo");
+                Console.WriteLine("2. Registrar devolución de libro");
+                Console.WriteLine("3. Listar todos los préstamos");
+                Console.WriteLine("4. Listar préstamos ordenados por fecha límite");
+                Console.WriteLine("5. Buscar préstamo por ID");
+                Console.WriteLine("6. Filtrar préstamos por estado");
+                Console.WriteLine("0. Volver al menú principal");
+                Console.Write("\nSeleccione una opción: ");
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        RegistrarPrestamo();
+                        break;
+                    case "2":
+                        RegistrarDevolucion();
+                        break;
+                    case "3":
+                        MostrarListaPrestamos(prestamoService.ObtenerTodos(), "LISTADO DE PRÉSTAMOS");
+                        break;
+                    case "4":
+                        MostrarListaPrestamos(prestamoService.OrdenarPorFechaLimite(), "PRÉSTAMOS ORDENADOS POR FECHA LÍMITE");
+                        break;
+                    case "5":
+                        Console.Write("\nIngrese ID del préstamo: ");
+                        if (int.TryParse(Console.ReadLine(), out int idBuscar))
+                        {
+                            Prestamo? p = prestamoService.BuscarPorId(idBuscar);
+                            Console.WriteLine(p != null ? $"\n{p.DetalleCompleto()}" : "\nPréstamo no encontrado.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("ID inválido.");
+                        }
+                        Pausar();
+                        break;
+                    case "6":
+                        FiltrarPrestamosPorEstado();
+                        break;
+                    case "0":
+                        volver = true;
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
+                        Pausar();
+                        break;
+                }
+            }
+        }
+
+        static void RegistrarPrestamo()
+        {
+            Console.WriteLine("\n--- REGISTRAR PRÉSTAMO ---");
+            Console.Write("ID del préstamo: ");
+            if (!int.TryParse(Console.ReadLine(), out int idPrestamo) || prestamoService.BuscarPorId(idPrestamo) != null)
+            {
+                Console.WriteLine("ID de préstamo inválido o ya existente.");
+                Pausar();
+                return;
+            }
+
+            Console.Write("ID del libro a prestar: ");
+            if (!int.TryParse(Console.ReadLine(), out int idLibro))
+            {
+                Console.WriteLine("ID de libro inválido.");
+                Pausar();
+                return;
+            }
+
+            Libro? libro = libroService.ObtenerTodos().FirstOrDefault(l => l.Id == idLibro);
+            if (libro == null || !libro.Disponible)
+            {
+                Console.WriteLine("El libro no existe o no se encuentra disponible.");
+                Pausar();
+                return;
+            }
+
+            Console.Write("Documento del usuario lector: ");
+            string docUsuario = Console.ReadLine() ?? "";
+            Usuario? usuario = usuarioService.BuscarPorDocumento(docUsuario);
+            if (usuario == null || !usuario.Activo)
+            {
+                Console.WriteLine("El usuario no existe o está inactivo.");
+                Pausar();
+                return;
+            }
+
+            Console.Write("Días de plazo para devolución (ej. 7): ");
+            if (!int.TryParse(Console.ReadLine(), out int diasPlazo) || diasPlazo <= 0)
+            {
+                diasPlazo = 7;
+            }
+
+            Prestamo nuevoPrestamo = new Prestamo(idPrestamo, libro, usuario, DateTime.Now, DateTime.Now.AddDays(diasPlazo));
+            prestamoService.AgregarPrestamo(nuevoPrestamo);
+
+            // Actualizamos disponibilidad del libro
+            libro.Disponible = false;
+
+            Console.WriteLine("\nPréstamo registrado correctamente. El libro quedó marcado como no disponible.");
+            Pausar();
+        }
+
+        static void RegistrarDevolucion()
+        {
+            Console.WriteLine("\n--- REGISTRAR DEVOLUCIÓN ---");
+            Console.Write("Ingrese ID del préstamo a devolver: ");
+            if (!int.TryParse(Console.ReadLine(), out int idPrestamo))
+            {
+                Console.WriteLine("ID inválido.");
+                Pausar();
+                return;
+            }
+
+            Prestamo? prestamo = prestamoService.BuscarPorId(idPrestamo);
+            if (prestamo == null)
+            {
+                Console.WriteLine("Préstamo no encontrado.");
+                Pausar();
+                return;
+            }
+
+            if (prestamo.Estado == EstadoPrestamo.Devuelto)
+            {
+                Console.WriteLine("Este préstamo ya había sido devuelto previamente.");
+                Pausar();
+                return;
+            }
+
+            prestamo.FechaDevolucion = DateTime.Now;
+            prestamo.Estado = EstadoPrestamo.Devuelto;
+            if (prestamo.LibroPrestado != null)
+            {
+                prestamo.LibroPrestado.Disponible = true;
+            }
+
+            Console.WriteLine("\nDevolución procesada. El libro vuelve a estar disponible.");
+            Pausar();
+        }
+
+        static void FiltrarPrestamosPorEstado()
+        {
+            Console.WriteLine("\nSeleccione el estado: 1. Activo | 2. Devuelto | 3. Vencido");
+            string? op = Console.ReadLine();
+            EstadoPrestamo estado = op switch
+            {
+                "2" => EstadoPrestamo.Devuelto,
+                "3" => EstadoPrestamo.Vencido,
+                _ => EstadoPrestamo.Activo
+            };
+
+            var filtrados = prestamoService.BuscarPorEstado(estado);
+            MostrarListaPrestamos(filtrados, $"PRÉSTAMOS EN ESTADO: {estado}");
+        }
+
+        static void MostrarListaPrestamos(List<Prestamo> lista, string tituloEncabezado)
+        {
+            Console.WriteLine($"\n--- {tituloEncabezado} ({lista.Count}) ---");
+            if (lista.Count == 0)
+            {
+                Console.WriteLine("No hay préstamos para mostrar.");
+            }
+            else
+            {
+                foreach (var p in lista)
+                {
+                    Console.WriteLine($"  * {p.ResumenCorto()} | Límite: {p.FechaLimite:yyyy-MM-dd} | Vencido: {(p.EstaVencido() ? "Sí" : "No")}");
+                }
+            }
+            Pausar();
+        }
+
+        // =======================================================
+        // OPCIÓN 4: REPORTES Y KPIS
+        // =======================================================
+        static void MostrarKpisGenerales()
+        {
+            Console.Clear();
+            Console.WriteLine("=======================================================");
+            Console.WriteLine("            REPORTES Y KPIS DEL SISTEMA                ");
+            Console.WriteLine("=======================================================\n");
+
+            Console.WriteLine("[INVENTARIO DE LIBROS]");
+            Console.WriteLine($"  * Total de libros:       {libroService.ObtenerTotalLibros()}");
+            Console.WriteLine($"  * Libros disponibles:    {libroService.ObtenerLibrosDisponibles()}");
+            Console.WriteLine($"  * Libros prestados:      {libroService.ObtenerLibrosPrestados()}\n");
+
+            Console.WriteLine("[COMUNIDAD DE USUARIOS]");
+            Console.WriteLine($"  * Total de usuarios:     {usuarioService.ObtenerTotalUsuarios()}");
+            Console.WriteLine($"  * Usuarios activos:      {usuarioService.ObtenerUsuariosActivos()}");
+            Console.WriteLine($"  * Usuarios inactivos:    {usuarioService.ObtenerUsuariosInactivos()}\n");
+
+            Console.WriteLine("[MOVIMIENTO DE PRÉSTAMOS]");
+            Console.WriteLine($"  * Total de préstamos:    {prestamoService.ObtenerTotalPrestamos()}");
+            Console.WriteLine($"  * Préstamos activos:     {prestamoService.ObtenerPrestamosActivos()}");
+            Console.WriteLine($"  * Préstamos vencidos:    {prestamoService.ObtenerPrestamosVencidos()}");
+            Console.WriteLine($"  * Préstamos devueltos:   {prestamoService.ObtenerPrestamosDevueltos()}");
+            Console.WriteLine($"  * Promedio de días:      {prestamoService.ObtenerPromedioDiasPrestamo():F1} días\n");
+
+            Pausar();
+        }
+
+        static void Pausar()
+        {
+            Console.WriteLine("\nPresione cualquier tecla para continuar...");
+            Console.ReadKey();
+        }
     }
 }
