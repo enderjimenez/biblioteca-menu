@@ -513,9 +513,25 @@ namespace BibliotecaMenu
             Console.WriteLine($"  * Préstamos devueltos:   {prestamoService.ObtenerPrestamosDevueltos()}");
             Console.WriteLine($"  * Promedio de días:      {prestamoService.ObtenerPromedioDiasPrestamo():F1} días\n");
 
+            // Comparación obligatoria Array vs List<T> integrada como diagnóstico del sistema
+            Console.WriteLine("-------------------------------------------------------");
+            Console.WriteLine("[DIAGNÓSTICO DE ESTRUCTURAS: ARRAY VS. LIST<T>]");
+
+            // 1. Ejemplo con Array (capacidad estática fija)
+            Libro[] muestraArray = new Libro[2];
+            muestraArray[0] = new Libro(901, "978-0131103627", "C Programming Language", "Kernighan & Ritchie", "Lenguajes", true);
+            muestraArray[1] = new Libro(902, "978-0321765723", "The C++ Programming Language", "Bjarne Stroustrup", "Lenguajes", true);
+
+            // 2. Mismo ejemplo con List<T> (colección dinámica utilizada en los Services)
+            List<Libro> muestraLista = new List<Libro>(muestraArray);
+            muestraLista.Add(new Libro(903, "978-0132350884", "Clean Code", "Robert C. Martin", "Arquitectura", true));
+
+            Console.WriteLine($"  * Array fijo (Libro[]):      Capacidad estática de {muestraArray.Length} espacios (no admite .Add ni .Remove).");
+            Console.WriteLine($"  * Lista dinámica (List<T>):  Creció dinámicamente a {muestraLista.Count} elementos y soporta consultas LINQ.");
+            Console.WriteLine("  * Conclusión técnica:        Los Services usan List<T> porque el catálogo crece en tiempo de ejecución.\n");
+
             Pausar();
         }
-
         static void Pausar()
         {
             Console.WriteLine("\nPresione cualquier tecla para continuar...");
